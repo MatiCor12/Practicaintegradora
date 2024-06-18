@@ -1,0 +1,80 @@
+<div>
+    <h3>Gamer product list</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Code</th>
+                <th>Stock</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>Image</th>
+                <th>Add</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each result.payload}}
+            <tr>
+                <td>{{this.title}}</td>
+                <td>{{this.description}}</td>
+                <td>{{this.price}}</td>
+                <td>{{this.code}}</td>
+                <td>{{this.stock}}</td>
+                <td>{{this.category}}</td>
+                <td>{{#if this.status}}
+                    Active
+                    {{else}}
+                    Disabled
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if this.thumbnails.length}}
+                    <a href="{{this.thumbnails.[0]}}" target="_blank">{{this.thumbnails.[0]}}</a>
+                    {{else}}
+                    There is no image
+                    {{/if}}
+                </td>
+                <td>
+                    <button onclick="addToCart('{{this._id}}')"><i class="bi bi-cart"></i></button>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        {{#if result.query}}
+        <span>Filtered by: {{result.query}}</span><br>
+        {{/if}}
+
+        {{#if result.hasPrevPage}}
+        <a href="?page={{result.prevPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Previous</a>
+        {{/if}}
+
+        <span>Page {{result.page}} of {{result.totalPages}}</span>
+
+        {{#if result.hasNextPage}}
+        <a href="?page={{result.nextPage}}&limit={{result.limit}}{{#if result.query}}&query={{result.query}}{{/if}}">Next</a>
+        {{/if}}
+    </div>
+<script>
+    function addToCart(productId) {
+        const idCart = '66563f767be627bc84947777';
+        fetch(`/api/carts/${idCart}/product/${productId}`,{
+            method: 'POST',
+            headers: {
+                'Content-Type':'application/json',
+            },
+        })
+        .then(resp=>resp.json())
+        .then(data=>{
+            console.log(data)
+        })
+        .cathc(error=>{
+            console.log('Error:', error)
+        })
+    }
+</script>
+</div>

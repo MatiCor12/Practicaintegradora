@@ -20,5 +20,4 @@ socket.on('mensaje', chats => {
         newMessage.innerHTML = `${message.user} wrote ${message.message}<br>`
         chat.appendChild(newMessage);
     });
-
 })

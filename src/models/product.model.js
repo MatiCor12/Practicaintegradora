@@ -21,4 +21,5 @@ ProductoSchema.set('toJSON',{
         return ret;
     }
 })
+
 export const productModel = model(nameCollection, ProductoSchema)

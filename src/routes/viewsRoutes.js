@@ -1,19 +1,19 @@
 import { Router } from 'express';
-import { productModel } from '../models/product.model.js';
+
+import { homeView, realTimeProductsView, productsView, cartIdView, loginView, registerView, loginSend, registerSend, logout} from '../controllers/views.js';
+import { admin, auth } from '../middleware/auth.js'
+import passport from 'passport';
 
 const router = Router()
 
-router.get('/',async (req, res)=> {
-    const productos = await productModel.find().lean()
-    return res.render('home', { productos })
-})
-
-router.get('/realtimeproducts',(req, res)=>{
-    return res.render('realTimeProducts')
-})
-
-router.get('/chat',(req, res)=>{
-    return res.render('chat')
-})
+router.get('/',homeView)
+router.get('/realtimeproducts', [auth, admin] , realTimeProductsView)
+router.get('/products', auth, productsView)
+router.get('/cart/:cid', auth, cartIdView)
+router.get('/login', loginView)
+router.post('/login', passport.authenticate('login',{failureRedirect:'/login'}), loginSend)
+router.get('/register', registerView)
+router.post('/register', passport.authenticate('register',{failureRedirect:'/register'}), registerSend)
+router.get('/logout', logout)
 
 export default router

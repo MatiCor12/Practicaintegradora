@@ -7,21 +7,36 @@ import {Server} from "socket.io"
 import { engine } from "express-handlebars"
 import __dirname from "./utils.js"
 import 'dotenv/config'
-import { productModel } from "./models/product.model.js"
 import { dbConnection } from "./config/config.js"
 import MessageManager from './class/ChatManager.js'
+import { addProductModerate, getProductsModerate } from "./moderate/products.js"
+import session from 'express-session'
+import MongoStore from "connect-mongo"
+import passport from "passport"
+import { initializePassport } from "./config/passport.js"
 
 //Nombramos la variable app con la función de expres
 const app = express()
 //Definimos el puerto
 const PORT= process.env.PORT
 
-
 const messageManager = new MessageManager()
 
 //Definimos los middlewares
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
+
+app.use(session({
+    store: MongoStore.create({mongoUrl: `${process.env.URL_MONGODB}`,ttl: 1000}),
+    secret: process.env.SECRET_SESSION,
+    resave : false,
+    saveUninitialized:true
+}));
+
+//Paspport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 
 //Uso de handlebars
 app.engine('handlebars', engine())
@@ -48,11 +63,12 @@ const io = new Server(expressServer)
 
 io.on('connection', async(socket) => {
 
-    const productos = await productModel.find()
-    socket.emit('products', productos);
+    const {payload} = await getProductsModerate({})
+    const productos = payload
+    socket.emit('products', payload);
 
     socket.on('addProducto', async (product)=> {
-        const newProduct = await productModel.create({...product});
+        const newProduct = await addProductModerate({...product});
         if(newProduct) {
             productos.push(newProduct)
             socket.emit('products', productos);

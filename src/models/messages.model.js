@@ -9,6 +9,13 @@ const messagesSchema = new mongoose.Schema({
     message: { type: String, required: true }
 })
 
+messagesSchema.set('toJSON',{
+    transform: function(doc,ret){
+        delete ret.__v;
+        return ret;
+    }
+})
+
 const messageModel = mongoose.model(messageCollection, messagesSchema)
 
 export default messageModel
