@@ -7,7 +7,7 @@ import { createHash, isValidPassword } from "../utils.js"
 const LocalStrategy = local.Strategy
 
 export const initializePassport = () => {
-//Estrategy
+
     passport.use('register', new LocalStrategy(
         { passReqToCallback: true, usernameField: 'email' },
         async (req, username, password, done) => {
@@ -68,4 +68,30 @@ export const initializePassport = () => {
         const user = await getUserById(id)
         done(null, user)
     })
+
+    passport.use('github', new GitHubStrategy(
+        {
+            clientID: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            callbackURL: process.env.CALLBACK_URL,
+        }, async (accessToken, refreshToken, profile, done) => {
+            try{
+                console.log(profile)
+                const email = profile._json.email;
+                const user = await getUser(email);
+                if(user)
+                    return done(null, user);
+                const newUser = {
+                    name:profile._json.name,
+                    email,
+                    password:'.$',
+                    image:profile._json.avatar_url,
+                    github: true
+                };
+                const result = await registerUser({ ...newUser });
+                return done(null, result);
+            } catch (error) {
+                done(error)
+            }
+        }))
 }

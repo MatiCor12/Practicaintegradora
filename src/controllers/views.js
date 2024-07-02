@@ -31,7 +31,7 @@ export const loginView= async (req = request, res = response) => {
     return res.render('login', {title: 'Login'})
 }
 
-export const loginSend= async (req = request, res = response) => {
+export const login= async (req = request, res = response) => {
     if(!req.user)
         return res.redirect('/login')
     req.session.user = {
@@ -39,6 +39,7 @@ export const loginSend= async (req = request, res = response) => {
         lastName: req.user.lastName,
         email: req.user.email,
         rol: req.user.rol,
+        image: req.user.image
     }
     return res.redirect('/')
 }
