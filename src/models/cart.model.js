@@ -16,7 +16,8 @@ const CartSchema = new Schema ({
             required:[true, 'The quantity of the product is mandatory']
         }
     }
-    ]
+    ],
+    default: []
 })
 
 CartSchema.set('toJSON',{

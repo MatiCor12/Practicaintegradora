@@ -9,7 +9,7 @@ const UserSchema = new Schema ({
     name: { type: String, required: [true, 'Name is required']},
     lastName: { type: String},
     email: { type: String, required: [true, 'Email is mandatory'], unique: true},
-    age: { type:Number },
+    age: { type: Number },
     password: { type: String, required: [true, 'Password is required']},
     rol: { type: String, default: 'user', enum:['user', 'admin']},
     status: { type: Boolean, default: true},
