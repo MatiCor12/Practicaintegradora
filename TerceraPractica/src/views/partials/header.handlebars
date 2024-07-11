@@ -1,0 +1,14 @@
+<header>
+    <div>
+        <h1>{{title}}</h1>
+        <nav>
+            {{#if user}}
+            <p>welcome to store gamer, {{user.name}}</p>
+            <a href="/logout">Sign off</a>
+            {{else}}
+            <a href="/login">Log in</a>
+            <a href="/register">Register</a>
+            {{/if}}
+        </nav>
+    </div>
+</header>
