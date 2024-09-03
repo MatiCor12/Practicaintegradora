@@ -1,0 +1,94 @@
+<form class="row g-3 mx-4" id="formProduct">
+    <!-- Product name -->
+    <div>
+        <label for="title">Product name</label>
+        <div>
+            <input type="text" name="title" id="title" required>
+        </div>
+    </div>
+
+    <!-- Description -->
+    <div>
+        <label for="description">Description</label>
+        <div>
+            <input type="text" name="description" id="description" required>
+        </div>
+    </div>
+
+    <!-- Price -->
+    <div>
+        <label for="price">Price</label>
+        <div>
+            <input type="number" name="price" id="price" required>
+        </div>
+    </div>
+
+    <!-- Code -->
+    <div>
+        <label for="code">Code</label>
+        <div>
+            <input type="text" name="code" id="code" required>
+        </div>
+    </div>
+
+    <!-- Stock -->
+    <div>
+        <label for="stock">Stock</label>
+        <div>
+            <input type="number" name="stock" id="stock" required>
+        </div>
+    </div>
+
+    <!-- Category-->
+    <div>
+        <label for="category">Category</label>
+        <div>
+            <input type="text" name="category" id="category" required>
+        </div>
+    </div>
+
+    <!-- Image -->
+    <div>
+        <label for="thumbnail" >Image (URL)</label>
+        <div>
+            <input  type="text" name="thumbnail" id="thumbnail" required>
+        </div>
+    </div>
+
+    <!-- Status (Checkbox) -->
+    <div>
+        <div>
+            <input name="status" class="form-check-input" type="checkbox" value="true" id="flexCheckChecked" checked>
+            <label class="form-check-label" for="flexCheckChecked">Status</label>
+        </div>
+    </div>
+
+    <!-- Button register -->
+    <div class="col-12 mt-4">
+        <button class="btn btn-primary" type="submit" id="add-btn">Register </button>
+    </div>
+
+    <h2>Delete Product:</h2>
+
+    <!-- ID of the Product to Delete -->
+    <div>
+        <label for="id-prod">Product ID</label>
+        <div>
+            <input type="number" name="id-prod" id="id-prod">
+        </div>
+    </div>
+
+    <!-- Button eliminated -->
+    <div>
+        <button type="button" class="btn btn-danger delete-btn" onclick="deleteProduct('{{_id}}')">Eliminate</button>
+    </div>
+</form>
+
+<div class="row mt-4" id="list-products">
+
+</div>
+<script>
+    const user = {{{json user}}};
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realtime.js"></script>
